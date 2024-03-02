@@ -6,7 +6,7 @@ We take the security of Yopass seriously. If you believe you have discovered a s
 
 Please follow these guidelines when reporting a security issue:
 
-1. Email the report to johan{a}haals.se. Please do not create a public GitHub issue.
+1. Email the report to z0x0z.bb{a}gmail.com. Please do not create a public GitHub issue.
 2. Provide a detailed description of the vulnerability, including steps to reproduce the issue, potential impact, and any suggested mitigations or remediations.
 3. Allow a reasonable time for the Yopass maintainers to respond to your report and address the vulnerability before publicly disclosing it. We will keep you updated on our progress.
 
