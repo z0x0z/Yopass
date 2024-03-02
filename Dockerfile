@@ -1,4 +1,4 @@
-FROM golang:1.21 as app
+FROM golang:1.21-bullseye as app
 RUN mkdir -p /yopass
 WORKDIR /yopass
 COPY . .
