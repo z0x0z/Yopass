@@ -107,6 +107,44 @@ $ yopass-server -h
 
 Encrypted secrets can be stored either in Memcached or Redis by changing the `--database` flag.
 
+## Development
+
+To download go dependencies ( go should be installed)
+
+```
+go mod tidy
+```
+
+To run cli client
+
+```
+cd cmd/yopass
+go build
+./yopass --expiration="0" --one-time=false --api http://localhost:1337  --key "random" --url http://localhost:1337 <<< 'testing'
+```
+
+To run server
+
+```
+cd cmd/yopass-server
+go build
+./yopass-server --database "redis"
+```
+
+To run website 
+
+```
+cd website
+yarn install
+REACT_APP_BACKEND_URL='http://localhost:1337' yarn start
+```
+
+To run DB, using docker
+
+```
+docker run -p 6379:6379 redis
+```
+
 ### Docker Compose
 
 Use the Docker Compose file `deploy/with-nginx-and-letsencrypt/docker-compose.yml` to set up a yopass instance with TLS transport encryption and certificate auto renewal using [Let's Encrypt](https://letsencrypt.org/). First point your domain to the host you want to run yopass on. Then replace the placeholder values for `VIRTUAL_HOST`, `LETSENCRYPT_HOST` and `LETSENCRYPT_EMAIL` in `deploy/with-nginx-and-letsencrypt/docker-compose.yml` with your values. Afterwards change the directory to `deploy/with-nginx-and-letsencrypt` and start the containers with:
