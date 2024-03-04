@@ -106,7 +106,7 @@ func decrypt(out io.Writer) error {
 		key = viper.GetString("key")
 	}
 
-	msg, err := yopass.Fetch(viper.GetString("api"), id)
+	msg, onetime, err := yopass.Fetch(viper.GetString("api"), id)
 	if err != nil {
 		return fmt.Errorf("Failed to fetch secret: %w", err)
 	}
@@ -114,6 +114,13 @@ func decrypt(out io.Writer) error {
 	pt, _, err := yopass.Decrypt(strings.NewReader(msg), key)
 	if err != nil {
 		return fmt.Errorf("Failed to decrypt secret: %w", err)
+	}
+
+	if onetime {
+		_, err := yopass.Delete(viper.GetString("api"), id)
+		if err != nil {
+			return fmt.Errorf("unable to delete secret: %w", err)
+		}
 	}
 
 	// Note yopass decrypt currently always prints the content to stdout. This

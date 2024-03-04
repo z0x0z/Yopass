@@ -73,6 +73,12 @@ const EnterDecryptionKey = ({
   );
 };
 
+const deleteSecret = async (url: string): Promise<Response> => {
+  return await fetch(url, {
+    method: 'DELETE',
+  });
+};
+
 const DisplaySecret = () => {
   const { t } = useTranslation();
   const { format, key, password: paramsPassword } = useParams();
@@ -96,7 +102,7 @@ const DisplaySecret = () => {
     setLoadSecret(!!password);
   }, [password, key]);
 
-  // Load the secret data when required
+  // Load the secret data when required - loads data from the browser cache
   const { data, error } = useSWR(loadSecret ? url : null, fetcher, {
     shouldRetryOnError: false,
     revalidateOnFocus: false,
@@ -143,6 +149,13 @@ const DisplaySecret = () => {
     );
   }
   if (value) {
+    // Call delete after decryption for onetime
+    if(data.one_time) {
+      const deleteKey = async () => {
+        await deleteSecret(url);
+      }     
+      deleteKey();
+    }
     return (
       <>
         <Secret secret={value.data as string} fileName={value.filename} />

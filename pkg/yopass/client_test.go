@@ -24,7 +24,7 @@ func TestFetch(t *testing.T) {
 		t.Fatal(err)
 	}
 
-	got, err := yopass.Fetch(ts.URL, key)
+	got, _, err := yopass.Fetch(ts.URL, key)
 	if err != nil {
 		t.Fatal(err)
 	}
@@ -32,14 +32,14 @@ func TestFetch(t *testing.T) {
 		t.Errorf("expected fetched message to be %q, got %q", msg, got)
 	}
 
-	_, err = yopass.Fetch(ts.URL, "4b9502b0-112a-40f5-a872-000000000000")
+	_, _, err = yopass.Fetch(ts.URL, "4b9502b0-112a-40f5-a872-000000000000")
 	if want := new(yopass.ServerError); !errors.As(err, &want) {
 		t.Errorf("expected a ServerError, got %v", err)
 	}
 }
 
 func TestFetchInvalidServer(t *testing.T) {
-	_, err := yopass.Fetch("127.0.0.1:9999/invalid", "1337")
+	_,_, err := yopass.Fetch("127.0.0.1:9999/invalid", "1337")
 	if err == nil {
 		t.Error("expected error, got none")
 	}

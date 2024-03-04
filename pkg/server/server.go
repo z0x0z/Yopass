@@ -82,7 +82,8 @@ func (y *Server) createSecret(w http.ResponseWriter, request *http.Request) {
 		return
 	}
 
-	resp := map[string]string{"message": key}
+	// Response - contain both message (string) & onetime (bool) expiration detail
+	resp := map[string]interface{}{"message": key, "one_time": s.OneTime}
 	jsonData, err := json.Marshal(resp)
 	if err != nil {
 		y.logger.Error("Failed to marshal create secret response", zap.Error(err), zap.String("key", key))
@@ -121,7 +122,6 @@ func (y *Server) getSecret(w http.ResponseWriter, request *http.Request) {
 // deleteSecret from database
 func (y *Server) deleteSecret(w http.ResponseWriter, request *http.Request) {
 	w.Header().Set("Access-Control-Allow-Origin", "*")
-
 	deleted, err := y.db.Delete(mux.Vars(request)["key"])
 	if err != nil {
 		http.Error(w, `{"message": "Failed to delete secret"}`, http.StatusInternalServerError)
@@ -132,7 +132,6 @@ func (y *Server) deleteSecret(w http.ResponseWriter, request *http.Request) {
 		http.Error(w, `{"message": "Secret not found"}`, http.StatusNotFound)
 		return
 	}
-
 	w.WriteHeader(204)
 }
 
