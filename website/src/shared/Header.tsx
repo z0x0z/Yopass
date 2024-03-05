@@ -13,8 +13,8 @@ export const Header = () => {
     <AppBar position="static" color="transparent" sx={{ marginBottom: 4 }}>
       <Toolbar>
         <Link href={home} color="inherit" underline="none">
-          <Typography variant="h6" component="div">
-            Yopass
+          <Typography variant="h5" component="div">
+            Tazapay
             <Box
               sx={{
                 verticalAlign: 'middle',
@@ -24,8 +24,8 @@ export const Header = () => {
               }}
               component="img"
               height="40"
-              alt=""
-              src="yopass.svg"
+              alt="Tazapay"
+              src="tazapay.png"
             />
           </Typography>
         </Link>
