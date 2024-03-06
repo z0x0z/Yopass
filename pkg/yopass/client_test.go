@@ -3,13 +3,13 @@ package yopass_test
 import (
 	"errors"
 	"fmt"
-	"go.uber.org/zap/zaptest"
 	"net/http/httptest"
 	"testing"
 
-	"github.com/jhaals/yopass/pkg/server"
-	"github.com/jhaals/yopass/pkg/yopass"
+	"go.uber.org/zap/zaptest"
 	"github.com/prometheus/client_golang/prometheus"
+	"github.com/z0x0z/yopass/pkg/server"
+	"github.com/z0x0z/yopass/pkg/yopass"
 )
 
 func TestFetch(t *testing.T) {
@@ -39,7 +39,7 @@ func TestFetch(t *testing.T) {
 }
 
 func TestFetchInvalidServer(t *testing.T) {
-	_,_, err := yopass.Fetch("127.0.0.1:9999/invalid", "1337")
+	_, _, err := yopass.Fetch("127.0.0.1:9999/invalid", "1337")
 	if err == nil {
 		t.Error("expected error, got none")
 	}

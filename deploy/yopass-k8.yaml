@@ -14,7 +14,7 @@ spec:
     spec:
       containers:
         - name: yopass
-          image: jhaals/yopass
+          image: z0x0z/yopass
           args:
             - "--memcached=localhost:11211"
           ports:
