@@ -30,11 +30,6 @@ There is no perfect way of sharing secrets online and there is a trade off in ev
 Yopass was first released in 2014 and has since then been maintained by me and contributed to by this fantastic group of [contributors](https://github.com/jhaals/yopass/graphs/contributors). Yopass is used by many large corporations none of which are currently listed in this readme.
 If you are using yopass and want to support other then by code contributions. Give your thanks in an email, consider donating or by giving consent to list your company name as a user of Yopass in this readme(Trusted by)
 
-## Trusted by
-
-- [Doddle LTD](https://doddle.com)
-- [Spotify](https://spotify.com)
-- [Gumtree Australia](https://www.gumtreeforbusiness.com.au/)
 ## Command-line interface
 
 The main motivation of Yopass is to make it easy for everyone to share secrets easily and quickly via a simple webinterface. Nevertheless, a command-line interface is provided as well to support use cases where the output of a program needs to be shared.
@@ -109,41 +104,135 @@ Encrypted secrets can be stored either in Memcached or Redis by changing the `--
 
 ## Development
 
-To download go dependencies ( go should be installed)
-
-```
-go mod tidy
-```
-
-To run cli client
-
-```
-cd cmd/yopass
-go build
-./yopass --expiration="0" --one-time=false --api http://localhost:1337  --key "random" --url http://localhost:1337 <<< 'testing'
-```
-
-To run server
-
-```
-cd cmd/yopass-server
-go build
-./yopass-server --database "redis"
-```
-
-To run website 
-
-```
-cd website
-yarn install
-REACT_APP_BACKEND_URL='http://localhost:1337' yarn start
-```
-
-To run DB, using docker
-
-```
-docker run -p 6379:6379 redis
-```
+- **To run application locally using go build**
+    
+    Clone the repo and follow steps below
+    
+    To download go dependencies ( go should be installed)
+    
+    ```bash
+    go mod tidy
+    ```
+    
+    To run cli client
+    
+    ```bash
+    cd cmd/yopass
+    go build
+    ./yopass --expiration="0" --one-time=false --api http://localhost:1337  --key "random" --url http://localhost:1337 <<< 'testing'
+    ```
+    
+    To run server
+    
+    ```bash
+    cd cmd/yopass-server
+    go build
+    ./yopass-server --database "redis"
+    ```
+    
+    To run website
+    
+    ```bash
+    cd website
+    yarn install
+    REACT_APP_BACKEND_URL='http://localhost:1337' yarn start
+    ```
+    
+    To run DB, using docker
+    
+    ```bash
+    docker run -p 6379:6379 redis
+    ```
+    
+    Browse the application using the URL,
+    
+    ```bash
+    http://localhost:3000
+    ```
+    
+- **To run application as Docker containers**
+    
+    Build Yopass docker container using the Dockerfile present in https://github.com/z0x0z/Yopass
+    
+    ```bash
+    docker build . -t yopass
+    ```
+    
+    start the redis container
+    
+    ```bash
+    docker run --name redis -p 6379:6379 redis
+    ```
+    
+    start the application container
+    
+    ```bash
+    docker run -p 1337:1337 yopass:latest --database=redis --redis=redis://<redis container ip>:6379
+    ```
+    
+    To run website
+    
+    ```bash
+    cd website
+    yarn install
+    REACT_APP_BACKEND_URL='http://localhost:1337' yarn start
+    ```
+    
+    Browse the application using the URL,
+    
+    ```bash
+    http://localhost:3000
+    ```
+    
+- **To run application using Docker-Compose**
+    
+    Build Yopass docker container using the Dockerfile present in https://github.com/z0x0z/Yopass
+    
+    ```bash
+    docker build . -t yopass
+    ```
+    
+    Save the below code in a docker-compose.yml file
+    
+    ```bash
+    version: '3.8'
+    services:
+      redis:
+        image: redis
+        container_name: redis
+        restart: always
+        ports:
+          - 6379:6379
+      yopass:
+        image: yopass
+        container_name: yopass
+        ports:
+          - 1337:1337
+        restart: always
+        depends_on:
+          - redis
+        command: "--database redis --redis=redis://redis:6379"
+    ```
+    
+    run the below command spin up application and redis containers
+    
+    ```bash
+    docker compose up
+    ```
+    
+    To run website
+    
+    ```bash
+    cd website
+    yarn install
+    REACT_APP_BACKEND_URL='http://localhost:1337' yarn start
+    ```
+    
+    Browse the application using the URL,
+    
+    ```bash
+    http://localhost:3000
+    ```
 
 ### Docker Compose
 
