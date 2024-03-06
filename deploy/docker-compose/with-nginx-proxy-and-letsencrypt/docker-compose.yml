@@ -32,7 +32,7 @@ services:
       - "11211"
 
   yopass:
-    image: jhaals/yopass
+    image: z0x0z/yopass
     restart: always
     environment:
       - VIRTUAL_HOST=subdomain.yourdomain.tld
