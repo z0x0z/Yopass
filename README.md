@@ -150,7 +150,7 @@ Encrypted secrets can be stored either in Memcached or Redis by changing the `--
     http://localhost:3000
     ```
     
-- **To run application as Docker containers**
+- **To run application locally using Docker containers**
     
     Build Yopass docker container using the Dockerfile present in https://github.com/z0x0z/Yopass
     
@@ -184,7 +184,7 @@ Encrypted secrets can be stored either in Memcached or Redis by changing the `--
     http://localhost:3000
     ```
     
-- **To run application using Docker-Compose**
+- **To run application locally using Docker-Compose**
     
     Build Yopass docker container using the Dockerfile present in https://github.com/z0x0z/Yopass
     
@@ -233,7 +233,33 @@ Encrypted secrets can be stored either in Memcached or Redis by changing the `--
     ```bash
     http://localhost:3000
     ```
+- **To run application in AWS EC2 using Docker containers**
+    
+    Build the application locally and push to any container repo (ex. DockerHub)
+    
+    make sure you have logged in to container repository
+    
+    ```bash
+    docker build . -t <reponame>/yopass
+    docker push <reponame>/yopass
+    ```
+    
+    Create an ElasticCache or Memorydb cluster in AWS which acts as redis database
+    
+    make sure the connections, security groups and appropriate permissions are in place
+    
+    Pull the docker container inside EC2 and run the container
+    
+    ```bash
+    docker pull <reponame>/yopass
+    docker run -p 1337:1337 z0x0z/yopass:linux --database redis --redis=rediss://<username>:<password>@clustercfg.yopass.6nwcyd.memorydb.ap-south-1.amazonaws.com:6379
+    ```
+    
+    Browse the application using the URL,
 
+    ```bash
+    http://<instance_ip>:1337
+    ```
 ### Docker Compose
 
 Use the Docker Compose file `deploy/with-nginx-and-letsencrypt/docker-compose.yml` to set up a yopass instance with TLS transport encryption and certificate auto renewal using [Let's Encrypt](https://letsencrypt.org/). First point your domain to the host you want to run yopass on. Then replace the placeholder values for `VIRTUAL_HOST`, `LETSENCRYPT_HOST` and `LETSENCRYPT_EMAIL` in `deploy/with-nginx-and-letsencrypt/docker-compose.yml` with your values. Afterwards change the directory to `deploy/with-nginx-and-letsencrypt` and start the containers with:
