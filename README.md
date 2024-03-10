@@ -260,6 +260,120 @@ Encrypted secrets can be stored either in Memcached or Redis by changing the `--
     ```bash
     http://<instance_ip>:1337
     ```
+- **To run application in AWS ECS using Docker containers**
+    
+    Build the application locally and push to any container repo (ex. DockerHub)
+    
+    make sure you have logged in to container repository
+    
+    ```bash
+    docker build . -t <reponame>/yopass
+    docker push <reponame>/yopass
+    ```
+    
+    Create an ECS Cluster - Give it a name and use AWS Fargate as infrastructure
+    
+    Create a task definition using below json
+    
+    Note: Review & change the docker commands and url of Memorydb in below file 
+    
+    ```json
+    {
+        "taskDefinitionArn": "arn:aws:ecs:ap-south-1:021675034395:task-definition/yopass-definition:2",
+        "containerDefinitions": [
+            {
+                "name": "yopass",
+                "image": "docker.io/z0x0z/yopass:linux",
+                "cpu": 0,
+                "portMappings": [
+                    {
+                        "name": "yopass-1337-tcp",
+                        "containerPort": 1337,
+                        "hostPort": 1337,
+                        "protocol": "tcp",
+                        "appProtocol": "http"
+                    }
+                ],
+                "essential": true,
+                "command": [
+                    "--database",
+                    "redis",
+                    "--redis",
+                    "rediss://clustercfg.yopass.6nwcyd.memorydb.ap-south-1.amazonaws.com:6379"
+                ],
+                "environment": [],
+                "mountPoints": [],
+                "volumesFrom": [],
+                "logConfiguration": {
+                    "logDriver": "awslogs",
+                    "options": {
+                        "awslogs-create-group": "true",
+                        "awslogs-group": "/ecs/yopass-definition",
+                        "awslogs-region": "ap-south-1",
+                        "awslogs-stream-prefix": "ecs"
+                    }
+                },
+                "systemControls": []
+            }
+        ],
+        "family": "yopass-definition",
+        "executionRoleArn": "arn:aws:iam::021675034395:role/ecsTaskExecutionRole",
+        "networkMode": "awsvpc",
+        "revision": 2,
+        "volumes": [],
+        "status": "ACTIVE",
+        "requiresAttributes": [
+            {
+                "name": "com.amazonaws.ecs.capability.logging-driver.awslogs"
+            },
+            {
+                "name": "ecs.capability.execution-role-awslogs"
+            },
+            {
+                "name": "com.amazonaws.ecs.capability.docker-remote-api.1.19"
+            },
+            {
+                "name": "com.amazonaws.ecs.capability.docker-remote-api.1.18"
+            },
+            {
+                "name": "ecs.capability.task-eni"
+            },
+            {
+                "name": "com.amazonaws.ecs.capability.docker-remote-api.1.29"
+            }
+        ],
+        "placementConstraints": [],
+        "compatibilities": [
+            "EC2",
+            "FARGATE"
+        ],
+        "requiresCompatibilities": [
+            "FARGATE"
+        ],
+        "cpu": "1024",
+        "memory": "3072",
+        "runtimePlatform": {
+            "cpuArchitecture": "X86_64",
+            "operatingSystemFamily": "LINUX"
+        },
+        "registeredAt": "2024-03-09T19:39:32.178Z",
+        "registeredBy": "arn:aws:iam::021675034395:user/gopikrishna",
+        "tags": []
+    }
+    ```
+    
+    Create a service in the ECS Cluster and ensure the correct task definition is selected. Enable public ip in Networking. Set needed inbound rules in Security group
+    
+    Once the service is deployed successfully, Navigate to tasks tab inside cluster and click on the task.
+    
+    Copy the public ip of the container
+    
+    Browse the application using the URL,
+
+    ```bash
+    http://<public_ip>:1337
+    ```
+
 ### Docker Compose
 
 Use the Docker Compose file `deploy/with-nginx-and-letsencrypt/docker-compose.yml` to set up a yopass instance with TLS transport encryption and certificate auto renewal using [Let's Encrypt](https://letsencrypt.org/). First point your domain to the host you want to run yopass on. Then replace the placeholder values for `VIRTUAL_HOST`, `LETSENCRYPT_HOST` and `LETSENCRYPT_EMAIL` in `deploy/with-nginx-and-letsencrypt/docker-compose.yml` with your values. Afterwards change the directory to `deploy/with-nginx-and-letsencrypt` and start the containers with:
