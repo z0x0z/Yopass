@@ -2,8 +2,6 @@
 
 # Yopass - Share Secrets Securely
 
-
-
 [![Go Report Card](https://goreportcard.com/badge/github.com/jhaals/yopass)](https://goreportcard.com/report/github.com/jhaals/yopass)
 [![codecov](https://codecov.io/gh/jhaals/yopass/branch/master/graph/badge.svg)](https://codecov.io/gh/jhaals/yopass)
 
@@ -105,281 +103,366 @@ Encrypted secrets can be stored either in Memcached or Redis by changing the `--
 ## Development
 
 - **To run application locally using go build**
-    
-    Clone the repo and follow steps below
-    
-    To download go dependencies ( go should be installed)
-    
-    ```bash
-    go mod tidy
-    ```
-    
-    To run cli client
-    
-    ```bash
-    cd cmd/yopass
-    go build
-    ./yopass --expiration="0" --one-time=false --api http://localhost:1337  --key "random" --url http://localhost:1337 <<< 'testing'
-    ```
-    
-    To run server
-    
-    ```bash
-    cd cmd/yopass-server
-    go build
-    ./yopass-server --database "redis"
-    ```
-    
-    To run website
-    
-    ```bash
-    cd website
-    yarn install
-    REACT_APP_BACKEND_URL='http://localhost:1337' yarn start
-    ```
-    
-    To run DB, using docker
-    
-    ```bash
-    docker run -p 6379:6379 redis
-    ```
-    
-    Browse the application using the URL,
-    
-    ```bash
-    http://localhost:3000
-    ```
-    
+  Clone the repo and follow steps below
+  To download go dependencies ( go should be installed)
+  ```bash
+  go mod tidy
+  ```
+  To run cli client
+  ```bash
+  cd cmd/yopass
+  go build
+  ./yopass --expiration="0" --one-time=false --api http://localhost:1337  --key "random" --url http://localhost:1337 <<< 'testing'
+  ```
+  To run server
+  ```bash
+  cd cmd/yopass-server
+  go build
+  ./yopass-server --database "redis"
+  ```
+  To run website
+  ```bash
+  cd website
+  yarn install
+  REACT_APP_BACKEND_URL='http://localhost:1337' yarn start
+  ```
+  To run DB, using docker
+  ```bash
+  docker run -p 6379:6379 redis
+  ```
+  Browse the application using the URL,
+  ```bash
+  http://localhost:3000
+  ```
 - **To run application locally using Docker containers**
-    
-    Build Yopass docker container using the Dockerfile present in https://github.com/z0x0z/Yopass
-    
-    ```bash
-    docker build . -t yopass
-    ```
-    
-    start the redis container
-    
-    ```bash
-    docker run --name redis -p 6379:6379 redis
-    ```
-    
-    start the application container
-    
-    ```bash
-    docker run -p 1337:1337 yopass:latest --database=redis --redis=redis://<redis container ip>:6379
-    ```
-    
-    To run website
-    
-    ```bash
-    cd website
-    yarn install
-    REACT_APP_BACKEND_URL='http://localhost:1337' yarn start
-    ```
-    
-    Browse the application using the URL,
-    
-    ```bash
-    http://localhost:3000
-    ```
-    
+  Build Yopass docker container using the Dockerfile present in https://github.com/z0x0z/Yopass
+  ```bash
+  docker build . -t yopass
+  ```
+  start the redis container
+  ```bash
+  docker run --name redis -p 6379:6379 redis
+  ```
+  start the application container
+  ```bash
+  docker run -p 1337:1337 yopass:latest --database=redis --redis=redis://<redis container ip>:6379
+  ```
+  To run website
+  ```bash
+  cd website
+  yarn install
+  REACT_APP_BACKEND_URL='http://localhost:1337' yarn start
+  ```
+  Browse the application using the URL,
+  ```bash
+  http://localhost:3000
+  ```
 - **To run application locally using Docker-Compose**
-    
-    Build Yopass docker container using the Dockerfile present in https://github.com/z0x0z/Yopass
-    
-    ```bash
-    docker build . -t yopass
-    ```
-    
-    Save the below code in a docker-compose.yml file
-    
-    ```bash
-    version: '3.8'
-    services:
-      redis:
-        image: redis
-        container_name: redis
-        restart: always
-        ports:
-          - 6379:6379
-      yopass:
-        image: yopass
-        container_name: yopass
-        ports:
-          - 1337:1337
-        restart: always
-        depends_on:
-          - redis
-        command: "--database redis --redis=redis://redis:6379"
-    ```
-    
-    run the below command spin up application and redis containers
-    
-    ```bash
-    docker compose up
-    ```
-    
-    To run website
-    
-    ```bash
-    cd website
-    yarn install
-    REACT_APP_BACKEND_URL='http://localhost:1337' yarn start
-    ```
-    
-    Browse the application using the URL,
-    
-    ```bash
-    http://localhost:3000
-    ```
+  Build Yopass docker container using the Dockerfile present in https://github.com/z0x0z/Yopass
+  ```bash
+  docker build . -t yopass
+  ```
+  Save the below code in a docker-compose.yml file
+  ```bash
+  version: '3.8'
+  services:
+    redis:
+      image: redis
+      container_name: redis
+      restart: always
+      ports:
+        - 6379:6379
+    yopass:
+      image: yopass
+      container_name: yopass
+      ports:
+        - 1337:1337
+      restart: always
+      depends_on:
+        - redis
+      command: "--database redis --redis=redis://redis:6379"
+  ```
+  run the below command spin up application and redis containers
+  ```bash
+  docker compose up
+  ```
+  To run website
+  ```bash
+  cd website
+  yarn install
+  REACT_APP_BACKEND_URL='http://localhost:1337' yarn start
+  ```
+  Browse the application using the URL,
+  ```bash
+  http://localhost:3000
+  ```
 - **To run application in AWS EC2 using Docker containers**
-    
-    Build the application locally and push to any container repo (ex. DockerHub)
-    
-    make sure you have logged in to container repository
-    
-    ```bash
-    docker build . -t <reponame>/yopass
-    docker push <reponame>/yopass
-    ```
-    
-    Create an ElasticCache or Memorydb cluster in AWS which acts as redis database
-    
-    make sure the connections, security groups and appropriate permissions are in place
-    
-    Pull the docker container inside EC2 and run the container
-    
-    ```bash
-    docker pull <reponame>/yopass
-    docker run -p 1337:1337 z0x0z/yopass:linux --database redis --redis=rediss://<username>:<password>@clustercfg.yopass.6nwcyd.memorydb.ap-south-1.amazonaws.com:6379
-    ```
-    
-    Browse the application using the URL,
 
-    ```bash
-    http://<instance_ip>:1337
-    ```
+  Build the application locally and push to any container repo (ex. DockerHub)
+
+  make sure you have logged in to container repository
+
+  ```bash
+  docker build . -t <reponame>/yopass
+  docker push <reponame>/yopass
+  ```
+
+  Create an ElasticCache or Memorydb cluster in AWS which acts as redis database
+
+  make sure the connections, security groups and appropriate permissions are in place
+
+  Pull the docker container inside EC2 and run the container
+
+  ```bash
+  docker pull <reponame>/yopass
+  docker run -p 1337:1337 z0x0z/yopass:linux --database redis --redis=rediss://<username>:<password>@clustercfg.yopass.6nwcyd.memorydb.ap-south-1.amazonaws.com:6379
+  ```
+
+  Browse the application using the URL,
+
+  ```bash
+  http://<instance_ip>:1337
+  ```
+
 - **To run application in AWS ECS using Docker containers**
-    
-    Build the application locally and push to any container repo (ex. DockerHub)
-    
-    make sure you have logged in to container repository
-    
-    ```bash
-    docker build . -t <reponame>/yopass
-    docker push <reponame>/yopass
-    ```
-    
-    Create an ECS Cluster - Give it a name and use AWS Fargate as infrastructure
-    
-    Create a task definition using below json
-    
-    Note: Review & change the docker commands and url of Memorydb in below file 
-    
-    ```json
-    {
-        "taskDefinitionArn": "arn:aws:ecs:ap-south-1:021675034395:task-definition/yopass-definition:2",
-        "containerDefinitions": [
-            {
-                "name": "yopass",
-                "image": "docker.io/z0x0z/yopass:linux",
-                "cpu": 0,
-                "portMappings": [
-                    {
-                        "name": "yopass-1337-tcp",
-                        "containerPort": 1337,
-                        "hostPort": 1337,
-                        "protocol": "tcp",
-                        "appProtocol": "http"
-                    }
-                ],
-                "essential": true,
-                "command": [
-                    "--database",
-                    "redis",
-                    "--redis",
-                    "rediss://clustercfg.yopass.6nwcyd.memorydb.ap-south-1.amazonaws.com:6379"
-                ],
-                "environment": [],
-                "mountPoints": [],
-                "volumesFrom": [],
-                "logConfiguration": {
-                    "logDriver": "awslogs",
-                    "options": {
-                        "awslogs-create-group": "true",
-                        "awslogs-group": "/ecs/yopass-definition",
-                        "awslogs-region": "ap-south-1",
-                        "awslogs-stream-prefix": "ecs"
-                    }
-                },
-                "systemControls": []
-            }
-        ],
-        "family": "yopass-definition",
-        "executionRoleArn": "arn:aws:iam::021675034395:role/ecsTaskExecutionRole",
-        "networkMode": "awsvpc",
-        "revision": 2,
-        "volumes": [],
-        "status": "ACTIVE",
-        "requiresAttributes": [
-            {
-                "name": "com.amazonaws.ecs.capability.logging-driver.awslogs"
-            },
-            {
-                "name": "ecs.capability.execution-role-awslogs"
-            },
-            {
-                "name": "com.amazonaws.ecs.capability.docker-remote-api.1.19"
-            },
-            {
-                "name": "com.amazonaws.ecs.capability.docker-remote-api.1.18"
-            },
-            {
-                "name": "ecs.capability.task-eni"
-            },
-            {
-                "name": "com.amazonaws.ecs.capability.docker-remote-api.1.29"
-            }
-        ],
-        "placementConstraints": [],
-        "compatibilities": [
-            "EC2",
-            "FARGATE"
-        ],
-        "requiresCompatibilities": [
-            "FARGATE"
-        ],
-        "cpu": "1024",
-        "memory": "3072",
-        "runtimePlatform": {
-            "cpuArchitecture": "X86_64",
-            "operatingSystemFamily": "LINUX"
-        },
-        "registeredAt": "2024-03-09T19:39:32.178Z",
-        "registeredBy": "arn:aws:iam::021675034395:user/gopikrishna",
-        "tags": []
-    }
-    ```
-    
-    Create a service in the ECS Cluster and ensure the correct task definition is selected. Enable public ip in Networking. Set needed inbound rules in Security group
-    
-    Once the service is deployed successfully, Navigate to tasks tab inside cluster and click on the task.
-    
-    Copy the public ip of the container
-    
-    Browse the application using the URL,
 
-    ```bash
-    http://<public_ip>:1337
-    ```
+  Build the application locally and push to any container repo (ex. DockerHub)
+
+  make sure you have logged in to container repository
+
+  ```bash
+  docker build . -t <reponame>/yopass
+  docker push <reponame>/yopass
+  ```
+
+  Create an ECS Cluster - Give it a name and use AWS Fargate as infrastructure
+
+  Create a task definition using below json
+
+  Note: Review & change the docker commands and url of Memorydb in below file
+
+  ```json
+  {
+    "taskDefinitionArn": "arn:aws:ecs:ap-south-1:021675034395:task-definition/yopass-definition:2",
+    "containerDefinitions": [
+      {
+        "name": "yopass",
+        "image": "docker.io/z0x0z/yopass:linux",
+        "cpu": 0,
+        "portMappings": [
+          {
+            "name": "yopass-1337-tcp",
+            "containerPort": 1337,
+            "hostPort": 1337,
+            "protocol": "tcp",
+            "appProtocol": "http"
+          }
+        ],
+        "essential": true,
+        "command": [
+          "--database",
+          "redis",
+          "--redis",
+          "rediss://clustercfg.yopass.6nwcyd.memorydb.ap-south-1.amazonaws.com:6379"
+        ],
+        "environment": [],
+        "mountPoints": [],
+        "volumesFrom": [],
+        "logConfiguration": {
+          "logDriver": "awslogs",
+          "options": {
+            "awslogs-create-group": "true",
+            "awslogs-group": "/ecs/yopass-definition",
+            "awslogs-region": "ap-south-1",
+            "awslogs-stream-prefix": "ecs"
+          }
+        },
+        "systemControls": []
+      }
+    ],
+    "family": "yopass-definition",
+    "executionRoleArn": "arn:aws:iam::021675034395:role/ecsTaskExecutionRole",
+    "networkMode": "awsvpc",
+    "revision": 2,
+    "volumes": [],
+    "status": "ACTIVE",
+    "requiresAttributes": [
+      {
+        "name": "com.amazonaws.ecs.capability.logging-driver.awslogs"
+      },
+      {
+        "name": "ecs.capability.execution-role-awslogs"
+      },
+      {
+        "name": "com.amazonaws.ecs.capability.docker-remote-api.1.19"
+      },
+      {
+        "name": "com.amazonaws.ecs.capability.docker-remote-api.1.18"
+      },
+      {
+        "name": "ecs.capability.task-eni"
+      },
+      {
+        "name": "com.amazonaws.ecs.capability.docker-remote-api.1.29"
+      }
+    ],
+    "placementConstraints": [],
+    "compatibilities": ["EC2", "FARGATE"],
+    "requiresCompatibilities": ["FARGATE"],
+    "cpu": "1024",
+    "memory": "3072",
+    "runtimePlatform": {
+      "cpuArchitecture": "X86_64",
+      "operatingSystemFamily": "LINUX"
+    },
+    "registeredAt": "2024-03-09T19:39:32.178Z",
+    "registeredBy": "arn:aws:iam::021675034395:user/gopikrishna",
+    "tags": []
+  }
+  ```
+
+  Create a service in the ECS Cluster and ensure the correct task definition is selected. Enable public ip in Networking. Set needed inbound rules in Security group
+
+  Once the service is deployed successfully, Navigate to tasks tab inside cluster and click on the task.
+
+  Copy the public ip of the container
+
+  Browse the application using the URL,
+
+  ```bash
+  http://<public_ip>:1337
+  ```
+
+- **To run application behind VPN with SSL using AWS ECS using Docker containers**
+
+  Build the application locally and push to any container repo (ex. DockerHub)
+
+  make sure you have logged in to container repository
+
+  ```bash
+  docker build . -t <reponame>/yopass
+  docker push <reponame>/yopass
+  ```
+
+  Create an ElasticCache or Memorydb cluster in AWS which acts as redis database
+
+  Create a security group which allow 0.0.0.0/0 traffic and attach to Memoryd
+
+  Create two Security Groups under VPC which is peered to VPN
+
+  1. ALB-SG → to Allow inbound traffic only on port 443 from anywhere
+  2. ECS-SG →to Allow inbound all traffic only from ALB-SG
+
+  Create an ECS Cluster - Give it a name and use AWS Fargate as infrastructure
+
+  Create a task definition using below json
+
+  Note: Review & change the docker commands and url of Memorydb in below file
+
+  ```json
+  {
+    "taskDefinitionArn": "arn:aws:ecs:ap-south-1:021675034395:task-definition/yopass-definition:2",
+    "containerDefinitions": [
+      {
+        "name": "yopass",
+        "image": "docker.io/z0x0z/yopass:linux",
+        "cpu": 0,
+        "portMappings": [
+          {
+            "name": "yopass-1337-tcp",
+            "containerPort": 1337,
+            "hostPort": 1337,
+            "protocol": "tcp",
+            "appProtocol": "http"
+          }
+        ],
+        "essential": true,
+        "command": [
+          "--database",
+          "redis",
+          "--redis",
+          "rediss://clustercfg.yopass.6nwcyd.memorydb.ap-south-1.amazonaws.com:6379"
+        ],
+        "environment": [],
+        "mountPoints": [],
+        "volumesFrom": [],
+        "logConfiguration": {
+          "logDriver": "awslogs",
+          "options": {
+            "awslogs-create-group": "true",
+            "awslogs-group": "/ecs/yopass-definition",
+            "awslogs-region": "ap-southeast-1",
+            "awslogs-stream-prefix": "ecs"
+          }
+        },
+        "systemControls": []
+      }
+    ],
+    "family": "yopass-definition",
+    "executionRoleArn": "arn:aws:iam::021675034395:role/ecsTaskExecutionRole",
+    "networkMode": "awsvpc",
+    "revision": 2,
+    "volumes": [],
+    "status": "ACTIVE",
+    "requiresAttributes": [
+      {
+        "name": "com.amazonaws.ecs.capability.logging-driver.awslogs"
+      },
+      {
+        "name": "ecs.capability.execution-role-awslogs"
+      },
+      {
+        "name": "com.amazonaws.ecs.capability.docker-remote-api.1.19"
+      },
+      {
+        "name": "com.amazonaws.ecs.capability.docker-remote-api.1.18"
+      },
+      {
+        "name": "ecs.capability.task-eni"
+      },
+      {
+        "name": "com.amazonaws.ecs.capability.docker-remote-api.1.29"
+      }
+    ],
+    "placementConstraints": [],
+    "compatibilities": ["EC2", "FARGATE"],
+    "requiresCompatibilities": ["FARGATE"],
+    "cpu": "1024",
+    "memory": "3072",
+    "runtimePlatform": {
+      "cpuArchitecture": "X86_64",
+      "operatingSystemFamily": "LINUX"
+    },
+    "registeredAt": "2024-03-09T19:39:32.178Z",
+    "registeredBy": "arn:aws:iam::021675034395:user/gopikrishna",
+    "tags": []
+  }
+  ```
+
+  Create a service in the ECS Cluster and ensure the correct task definition is selected. Disable public ip in Networking. attach ECS-SG security group.
+
+  **Create Application Load balancer** → Select scheme “internal” → select VPC which is peered to VPN → choose ALB-SG security group → Create Listener → https protocol 443 port → create target group and choose it → Under Default SSL/TLS server certificate → choose From ACM and select \*.company.com certificate → click on create Load balancer
+
+  **Create Target group** → Select ip addresses → http protocol and 1337 port → select VPC which is peered to VPN → paste the private ip of the container and enter port as 1337 → click on include as pending below and click create
+
+  Now copy the DNS name of the load balancer and add a CNAME entry (secrets) in cloudfare.
+
+  Now connect to pritunl VPN,
+
+  Browse the application using the URL,
+
+  ```bash
+  https://secrets.company.com
+  ```
 
 ### Docker Compose
 
 Use the Docker Compose file `deploy/with-nginx-and-letsencrypt/docker-compose.yml` to set up a yopass instance with TLS transport encryption and certificate auto renewal using [Let's Encrypt](https://letsencrypt.org/). First point your domain to the host you want to run yopass on. Then replace the placeholder values for `VIRTUAL_HOST`, `LETSENCRYPT_HOST` and `LETSENCRYPT_EMAIL` in `deploy/with-nginx-and-letsencrypt/docker-compose.yml` with your values. Afterwards change the directory to `deploy/with-nginx-and-letsencrypt` and start the containers with:
+
 ```console
 docker-compose up -d
 ```
+
 Yopass will then be available under the domain you specified through `VIRTUAL_HOST` / `LETSENCRYPT_HOST`.
 
 Advanced users that already have a reverse proxy handling TLS connections can use the `insecure` setup:
@@ -388,6 +471,7 @@ Advanced users that already have a reverse proxy handling TLS connections can us
 cd deploy/docker/compose/insecure
 docker-compose up -d
 ```
+
 Afterwards point your reverse proxy to `127.0.0.1:80`.
 
 ### Docker
@@ -399,6 +483,7 @@ docker run --name memcached_yopass -d memcached
 docker run -p 443:1337 -v /local/certs/:/certs \
     --link memcached_yopass:memcached -d z0x0z/yopass --memcached=memcached:11211 --tls-key=/certs/tls.key --tls-cert=/certs/tls.crt
 ```
+
 Afterwards yopass will be available on port 443 through all IP addresses of the host, including public ones. If you want to limit the availability to a specific IP address use `-p` like so: `-p 127.0.0.1:443:1337`.
 
 Without TLS encryption (needs a reverse proxy for transport encryption):
@@ -450,6 +535,7 @@ Supported metrics:
 Yopass has third party support for other languages. That means you can write translations for the language you'd like or use a third party language file. Please note that yopass itself is english only and any other translations are community supported.
 
 Here's a list of available translations:
+
 - [German](https://github.com/Anturix/yopass-german)
 - [French](https://github.com/NicolasStr/yopass-french)
 - [Spanish](https://github.com/nbensa/yopass-spanish)
