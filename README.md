@@ -243,7 +243,7 @@ Encrypted secrets can be stored either in Memcached or Redis by changing the `--
 
   ```json
   {
-    "taskDefinitionArn": "arn:aws:ecs:ap-south-1:021675034395:task-definition/yopass-definition:2",
+    "taskDefinitionArn": "arn:aws:ecs:ap-south-1:0216750xxx95:task-definition/yopass-definition:2",
     "containerDefinitions": [
       {
         "name": "yopass",
@@ -263,7 +263,7 @@ Encrypted secrets can be stored either in Memcached or Redis by changing the `--
           "--database",
           "redis",
           "--redis",
-          "rediss://clustercfg.yopass.6nwcyd.memorydb.ap-south-1.amazonaws.com:6379"
+          "rediss://clustercfg.yopass.6xxxxd.memorydb.ap-south-1.amazonaws.com:6379"
         ],
         "environment": [],
         "mountPoints": [],
@@ -273,7 +273,7 @@ Encrypted secrets can be stored either in Memcached or Redis by changing the `--
           "options": {
             "awslogs-create-group": "true",
             "awslogs-group": "/ecs/yopass-definition",
-            "awslogs-region": "ap-south-1",
+            "awslogs-region": "ap-southeast-1",
             "awslogs-stream-prefix": "ecs"
           }
         },
@@ -281,7 +281,7 @@ Encrypted secrets can be stored either in Memcached or Redis by changing the `--
       }
     ],
     "family": "yopass-definition",
-    "executionRoleArn": "arn:aws:iam::021675034395:role/ecsTaskExecutionRole",
+    "executionRoleArn": "arn:aws:iam::021611124395:role/ecsTaskExecutionRole",
     "networkMode": "awsvpc",
     "revision": 2,
     "volumes": [],
@@ -316,7 +316,7 @@ Encrypted secrets can be stored either in Memcached or Redis by changing the `--
       "operatingSystemFamily": "LINUX"
     },
     "registeredAt": "2024-03-09T19:39:32.178Z",
-    "registeredBy": "arn:aws:iam::021675034395:user/gopikrishna",
+    "registeredBy": "arn:aws:iam::021611134395:user/gopikrishna",
     "tags": []
   }
   ```
@@ -361,7 +361,7 @@ Encrypted secrets can be stored either in Memcached or Redis by changing the `--
 
   ```json
   {
-    "taskDefinitionArn": "arn:aws:ecs:ap-south-1:021675034395:task-definition/yopass-definition:2",
+    "taskDefinitionArn": "arn:aws:ecs:ap-south-1:021673454395:task-definition/yopass-definition:2",
     "containerDefinitions": [
       {
         "name": "yopass",
@@ -381,7 +381,7 @@ Encrypted secrets can be stored either in Memcached or Redis by changing the `--
           "--database",
           "redis",
           "--redis",
-          "rediss://clustercfg.yopass.6nwcyd.memorydb.ap-south-1.amazonaws.com:6379"
+          "rediss://clustercfg.yopass.6xxxxd.memorydb.ap-south-1.amazonaws.com:6379"
         ],
         "environment": [],
         "mountPoints": [],
@@ -399,7 +399,7 @@ Encrypted secrets can be stored either in Memcached or Redis by changing the `--
       }
     ],
     "family": "yopass-definition",
-    "executionRoleArn": "arn:aws:iam::021675034395:role/ecsTaskExecutionRole",
+    "executionRoleArn": "arn:aws:iam::021123434395:role/ecsTaskExecutionRole",
     "networkMode": "awsvpc",
     "revision": 2,
     "volumes": [],
@@ -434,7 +434,7 @@ Encrypted secrets can be stored either in Memcached or Redis by changing the `--
       "operatingSystemFamily": "LINUX"
     },
     "registeredAt": "2024-03-09T19:39:32.178Z",
-    "registeredBy": "arn:aws:iam::021675034395:user/gopikrishna",
+    "registeredBy": "arn:aws:iam::021672345395:user/gopikrishna",
     "tags": []
   }
   ```
